@@ -12,6 +12,9 @@
         <argument
             android:name="searchRequest"
             app:argType="string" />
+        <action
+            android:id="@+id/action_albumsListFragment_to_emptyScreenFragment"
+            app:destination="@id/emptyScreenFragment" />
     </fragment>
     <fragment
         android:id="@+id/emptyScreenFragment"
@@ -20,5 +23,8 @@
         <action
             android:id="@+id/action_emptyScreenFragment_to_albumsListFragment"
             app:destination="@id/albumsListFragment" />
+        <argument
+            android:name="emptySearchText"
+            app:argType="string" />
     </fragment>
 </navigation>

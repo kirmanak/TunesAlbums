@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import com.forasoft.albums.R
 
@@ -18,8 +19,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
+        val args = bundleOf(TEXT_ARGUMENT to getString(R.string.search_prompt))
+        getNavController().setGraph(getNavController().graph, args)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         val action =
             EmptyScreenFragmentDirections.actionEmptyScreenFragmentToAlbumsListFragment(text)
-        findNavController(R.id.main_nav_host).navigate(action)
+        getNavController().navigate(action)
     }
 
     private fun handleIntent(intent: Intent?) {
@@ -61,4 +63,6 @@ class MainActivity : AppCompatActivity() {
             Intent.ACTION_SEARCH -> onSearchRequest(intent.getStringExtra(SearchManager.QUERY))
         }
     }
+
+    private fun getNavController() = findNavController(R.id.main_nav_host)
 }

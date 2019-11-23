@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.forasoft.albums.R
 import com.forasoft.albums.TunesApp
@@ -53,14 +54,20 @@ class AlbumsListFragment : Fragment() {
 
         arguments?.getString("searchRequest")?.let { term ->
             viewModel.search(term).observe(this, Observer<RequestResult<List<Album>>> { result ->
-                try {
-                    when (result?.state) {
-                        State.SUCCESS -> result.result?.let { albumAdapter.updateData(it) }
-                        State.LOADING -> TODO("Show progress bar")
-                        State.FAILURE -> TODO("Show error")
+                when (val state = result?.state) {
+                    State.SUCCESS -> {
+                        result.result?.let { albumAdapter.updateData(it) }
+                        progress_bar.visibility = View.GONE
                     }
-                } catch (e: NotImplementedError) {
-                    Log.e(TAG, "onChanged: not implemented", e)
+                    State.LOADING -> progress_bar.visibility = View.VISIBLE
+                    State.FAILURE -> {
+                        val destination =
+                            AlbumsListFragmentDirections.actionAlbumsListFragmentToEmptyScreenFragment(
+                                getString(R.string.search_failure)
+                            )
+                        findNavController().navigate(destination)
+                    }
+                    else -> Log.w(TAG, "Unknown state: $state")
                 }
             })
         }
