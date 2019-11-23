@@ -4,6 +4,7 @@ import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,14 +20,12 @@ class SearchTest {
     val activityRule = ActivityTestRule(MainActivity::class.java)
 
     @Test
-    fun enterSearchRequest() {
+    fun recyclerViewIsShownAfterSearchRequest() {
+        onView(isAssignableFrom(RecyclerView::class.java)).check(doesNotExist())
         onView(withId(R.id.app_bar_search)).perform(click())
         onView(isAssignableFrom(EditText::class.java)).perform(
             typeText("Eminem"), pressImeActionButton()
         )
         onView(isAssignableFrom(RecyclerView::class.java)).check(matches(isDisplayed()))
-        onView(isDescendantOfA(isAssignableFrom(RecyclerView::class.java))).check(
-            matches(isDisplayed())
-        )
     }
 }
