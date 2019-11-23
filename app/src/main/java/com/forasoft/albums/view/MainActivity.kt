@@ -12,6 +12,9 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import com.forasoft.albums.R
 
+/**
+ * Single activity. Handles search requests and navigation
+ */
 class MainActivity : AppCompatActivity() {
     companion object {
         private val TAG = MainActivity::class.java.simpleName

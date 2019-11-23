@@ -9,6 +9,9 @@ import com.forasoft.albums.databinding.EmptyScreenFragmentBinding
 
 const val TEXT_ARGUMENT = "emptySearchText"
 
+/**
+ * Shows text to user. Primarily shows prompt and error texts
+ */
 class EmptyScreenFragment : Fragment() {
 
     override fun onCreateView(

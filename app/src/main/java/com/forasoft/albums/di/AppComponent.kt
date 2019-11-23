@@ -8,6 +8,9 @@ import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
+/**
+ * Main Dagger component used to inject dependencies
+ */
 @Singleton
 @Component(modules = [NetworkModule::class, StorageModule::class])
 interface AppComponent {

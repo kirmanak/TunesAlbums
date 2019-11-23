@@ -6,6 +6,9 @@ import com.forasoft.albums.model.storage.TunesDatabase
 import dagger.Module
 import dagger.Provides
 
+/**
+ * Storage-related dependencies provider
+ */
 @Module
 class StorageModule {
     @Provides

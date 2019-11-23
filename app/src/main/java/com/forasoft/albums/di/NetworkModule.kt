@@ -8,6 +8,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.Executors
 
+/**
+ * Network-related dependencies provider
+ */
 @Module
 class NetworkModule {
     @Provides

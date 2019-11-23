@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.forasoft.albums.databinding.SongViewHolderBinding
 import com.forasoft.albums.viewmodel.Song
 
+/**
+ * Adapts songs to be shown in UI
+ */
 class SongAdapter : RecyclerView.Adapter<SongViewHolder>() {
     private val differ = AsyncListDiffer<Song>(this, object : DiffUtil.ItemCallback<Song>() {
         override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {

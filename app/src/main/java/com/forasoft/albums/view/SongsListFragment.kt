@@ -20,6 +20,9 @@ import javax.inject.Inject
 
 const val ALBUM_ARGUMENT = "album"
 
+/**
+ * Songs list screen
+ */
 class SongsListFragment : Fragment() {
     companion object {
         private val TAG = SongsListFragment::class.java.simpleName
