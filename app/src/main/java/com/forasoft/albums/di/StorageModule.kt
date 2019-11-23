@@ -1,7 +1,8 @@
-package com.forasoft.albums.model.storage
+package com.forasoft.albums.di
 
 import android.content.Context
 import androidx.room.Room
+import com.forasoft.albums.model.storage.TunesDatabase
 import dagger.Module
 import dagger.Provides
 

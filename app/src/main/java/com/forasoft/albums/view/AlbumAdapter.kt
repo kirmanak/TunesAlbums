@@ -18,15 +18,17 @@ class AlbumAdapter : RecyclerView.Adapter<AlbumViewHolder>() {
         private val TAG = AlbumAdapter::class.java.simpleName
     }
 
-    private val differ = AsyncListDiffer<Album>(this, object : DiffUtil.ItemCallback<Album>() {
-        override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean {
-            return oldItem.name == newItem.name
-        }
+    private val differ by lazy {
+        AsyncListDiffer<Album>(this, object : DiffUtil.ItemCallback<Album>() {
+            override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean {
+                return oldItem.name == newItem.name
+            }
 
-        override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean {
-            return oldItem == newItem
-        }
-    })
+            override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean {
+                return oldItem == newItem
+            }
+        })
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -42,8 +44,8 @@ class AlbumAdapter : RecyclerView.Adapter<AlbumViewHolder>() {
         holder.setData(differ.currentList[position])
     }
 
-    fun updateData(albums: Array<Album>) {
-        Log.d(TAG, "updateData() called with ${albums.contentToString()}")
-        differ.submitList(albums.asList())
+    fun updateData(albums: List<Album>) {
+        Log.d(TAG, "updateData() called with $albums")
+        differ.submitList(albums)
     }
 }

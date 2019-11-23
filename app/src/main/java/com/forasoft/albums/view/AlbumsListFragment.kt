@@ -11,8 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.forasoft.albums.R
 import com.forasoft.albums.TunesApp
+import com.forasoft.albums.model.RequestResult
+import com.forasoft.albums.model.State
 import com.forasoft.albums.viewmodel.Album
-import com.forasoft.albums.viewmodel.AlbumsListViewModel
+import com.forasoft.albums.viewmodel.TunesViewModel
 import kotlinx.android.synthetic.main.albums_list_fragment.*
 import javax.inject.Inject
 
@@ -27,7 +29,7 @@ class AlbumsListFragment : Fragment() {
 
     private val albumAdapter by lazy { AlbumAdapter() }
     @Inject
-    lateinit var viewModel: AlbumsListViewModel
+    lateinit var viewModel: TunesViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,10 +51,18 @@ class AlbumsListFragment : Fragment() {
         albums_list.layoutManager = LinearLayoutManager(albums_list.context)
         albums_list.adapter = albumAdapter
 
-        val searchRequest = arguments?.getString("searchRequest")
-        if (searchRequest != null)
-            viewModel.search(searchRequest).observe(this, Observer<Array<Album>> {
-                albumAdapter.updateData(it)
+        arguments?.getString("searchRequest")?.let { term ->
+            viewModel.search(term).observe(this, Observer<RequestResult<List<Album>>> { result ->
+                try {
+                    when (result?.state) {
+                        State.SUCCESS -> result.result?.let { albumAdapter.updateData(it) }
+                        State.LOADING -> TODO("Show progress bar")
+                        State.FAILURE -> TODO("Show error")
+                    }
+                } catch (e: NotImplementedError) {
+                    Log.e(TAG, "onChanged: not implemented", e)
+                }
             })
+        }
     }
 }

@@ -12,7 +12,11 @@ import javax.inject.Singleton
 /**
  * Handles SQLite db (creation, migration, etc.)
  */
-@Database(entities = [AlbumEntity::class, SearchRequestEntity::class], version = 2)
+@Database(
+    entities = [AlbumEntity::class, SearchRequestEntity::class],
+    version = 2,
+    exportSchema = false
+)
 @Singleton
 @TypeConverters(Converter::class)
 abstract class TunesDatabase : RoomDatabase() {

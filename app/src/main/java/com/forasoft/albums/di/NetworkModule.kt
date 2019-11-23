@@ -1,5 +1,6 @@
-package com.forasoft.albums.model.network
+package com.forasoft.albums.di
 
+import com.forasoft.albums.model.network.TunesInterface
 import dagger.Module
 import dagger.Provides
 import retrofit2.Converter

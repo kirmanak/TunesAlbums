@@ -2,8 +2,9 @@ package com.forasoft.albums.model
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations.map
+import androidx.lifecycle.MutableLiveData
 import com.forasoft.albums.model.network.TunesInterface
+import com.forasoft.albums.model.network.TunesItem
 import com.forasoft.albums.model.network.TunesResult
 import com.forasoft.albums.model.storage.AlbumDao
 import com.forasoft.albums.model.storage.SearchRequestDao
@@ -30,51 +31,55 @@ class AlbumsRepo @Inject constructor(
         private val TAG = AlbumsRepo::class.java.simpleName
     }
 
-    fun searchAlbums(request: String): LiveData<Array<Album>> {
-        api.search(request).enqueue(object : Callback<TunesResult> {
-            override fun onFailure(call: Call<TunesResult>, t: Throwable) {
-                Log.e(TAG, "onFailure() called", t)
+    fun searchAlbums(request: String): LiveData<RequestResult<List<Album>>> {
+        Log.d(TAG, "searchAlbums() called with $request")
 
-                TODO("Show error in UI")
+        return object : Resource<List<Album>, Array<AlbumEntity>, Array<TunesItem>, String>() {
+            override fun fetchFromNetwork(request: String): LiveData<RequestResult<Array<TunesItem>>> {
+                val result = MutableLiveData<RequestResult<Array<TunesItem>>>()
+
+                api.search(request).enqueue(object : Callback<TunesResult> {
+                    override fun onFailure(call: Call<TunesResult>, t: Throwable) {
+                        Log.e(TAG, "searchAlbums.onFailure() called", t)
+                        setValue(result, RequestResult.failure())
+                    }
+
+                    override fun onResponse(
+                        call: Call<TunesResult>,
+                        resp: Response<TunesResult>
+                    ) {
+                        Log.d(TAG, "searchAlbums.onResponse() called with $resp")
+
+                        val received = resp.body()?.results ?: emptyArray()
+                        setValue(result, RequestResult.success(received))
+                    }
+                })
+
+                return result
             }
 
-            override fun onResponse(
-                call: Call<TunesResult>,
-                response: Response<TunesResult>
-            ) {
-                Log.d(TAG, "onResponse() called: $response")
-
-                val result = response.body()?.results ?: emptyArray()
-                if (result.isEmpty())
-                    return
+            override fun saveToStorage(data: Array<TunesItem>, request: String) {
+                Log.d(TAG, "searchAlbums.persist() called with '$request', '$data'")
 
                 val requestId = searchDao.insert(SearchRequestEntity(0, Date(), request))
 
-                val entities = result.map {
+                val entities = data.map {
                     AlbumEntity(
-                        0,
-                        it.collectionId ?: return,
-                        it.artistName ?: return,
-                        it.collectionName ?: return,
-                        it.artworkUrl100 ?: return,
-                        it.releaseDate ?: return,
-                        it.primaryGenreName ?: return,
+                        0, it.collectionId ?: return, it.artistName ?: return,
+                        it.collectionName ?: return, it.artworkUrl100 ?: return,
+                        it.releaseDate ?: return, it.primaryGenreName ?: return,
                         requestId
                     )
                 }.toTypedArray()
 
-                Log.d(TAG, "onResponse: inserting ${entities.contentToString()}")
                 albumDao.insertAll(entities)
             }
 
-        })
+            override fun loadFromDb(request: String) = albumDao.getAllBySearchTerm(request)
 
-        val albumsEntities = albumDao.getAllBySearchTerm(request)
-
-        return map(albumsEntities) { array ->
-            array.map {
+            override fun map(storageResult: Array<AlbumEntity>) = storageResult.map {
                 Album(it.artistName, it.name, it.posterUrl, it.releaseDate, it.genre)
-            }.toTypedArray()
-        }
+            }
+        }.asLiveData(request)
     }
 }

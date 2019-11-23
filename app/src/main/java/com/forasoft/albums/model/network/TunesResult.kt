@@ -3,7 +3,7 @@ package com.forasoft.albums.model.network
 import com.google.gson.annotations.SerializedName
 
 data class TunesResult(
-    @SerializedName("resultsCount") val resultsCount: Long?,
+    @SerializedName("resultCount") val resultCount: Long?,
     @SerializedName("results") val results: Array<TunesItem>?
 ) {
 
@@ -13,7 +13,7 @@ data class TunesResult(
 
         other as TunesResult
 
-        if (resultsCount != other.resultsCount) return false
+        if (resultCount != other.resultCount) return false
         if (results != null) {
             if (other.results == null) return false
             if (!results.contentEquals(other.results)) return false
@@ -23,12 +23,12 @@ data class TunesResult(
     }
 
     override fun hashCode(): Int {
-        var result = resultsCount?.hashCode() ?: 0
+        var result = resultCount?.hashCode() ?: 0
         result = 31 * result + (results?.contentHashCode() ?: 0)
         return result
     }
 
     override fun toString(): String {
-        return "TunesResult(resultsCount=$resultsCount, results=${results?.contentToString()})"
+        return "TunesResult(resultsCount=$resultCount, results=${results?.contentToString()})"
     }
 }
