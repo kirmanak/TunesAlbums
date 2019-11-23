@@ -21,7 +21,7 @@ class SongAdapter : RecyclerView.Adapter<SongViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = SongViewHolderBinding.inflate(inflater)
+        val binding = SongViewHolderBinding.inflate(inflater, parent, false)
         return SongViewHolder(binding)
     }
 
