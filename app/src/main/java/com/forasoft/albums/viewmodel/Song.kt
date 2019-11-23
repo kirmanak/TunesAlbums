@@ -1,10 +1,17 @@
 package com.forasoft.albums.viewmodel
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 data class Song(
     val songName: String,
     val trackTimeMs: Long,
     val previewUrl: String
 ) {
+
+    fun formatDuration(): String =
+        SimpleDateFormat("mm:ss", Locale.getDefault()).format(Date(trackTimeMs))
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
