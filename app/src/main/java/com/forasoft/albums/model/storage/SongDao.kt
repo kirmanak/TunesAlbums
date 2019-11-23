@@ -17,6 +17,9 @@ interface SongDao {
     @Query("SELECT * FROM SongEntity WHERE SongEntity.album_id = :albumId")
     fun getAllByAlbumId(albumId: Long): LiveData<Array<SongEntity>>
 
+    @Query("SELECT COUNT(*) FROM SongEntity WHERE SongEntity.album_id = :albumId")
+    fun countAllByAlbumId(albumId: Long): Long
+
     @Insert(onConflict = REPLACE)
     fun insertAll(songs: List<SongEntity>)
 }

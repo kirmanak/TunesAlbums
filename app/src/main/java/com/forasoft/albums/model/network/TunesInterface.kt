@@ -17,7 +17,6 @@ interface TunesInterface {
         @Query("country") country: String = Locale.getDefault().country,
         @Query("media") media: String = "music",
         @Query("entity") entity: String = "album",
-        @Query("attribute") attribute: String = "albumTerm",
         @Query("limit") limit: Int = 100,
         @Query("lang") lang: String = "${Locale.getDefault().language}_${Locale.getDefault().country}",
         @Query("version") version: Int = 2,

@@ -14,10 +14,13 @@ import com.forasoft.albums.model.storage.entity.SearchRequestEntity
 import com.forasoft.albums.model.storage.entity.SongEntity
 import com.forasoft.albums.viewmodel.Album
 import com.forasoft.albums.viewmodel.Song
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -33,6 +36,8 @@ class TunesRepo @Inject constructor(
 ) {
     companion object {
         private val TAG = TunesRepo::class.java.simpleName
+        private val CACHE_TIMEOUT = TimeUnit.DAYS.toMillis(1)
+
     }
 
     fun searchAlbums(request: String): LiveData<RequestResult<List<Album>>> {
@@ -62,22 +67,27 @@ class TunesRepo @Inject constructor(
                 return result
             }
 
-            override fun saveToStorage(data: List<TunesItem>, request: String) {
-                Log.d(TAG, "searchAlbums.persist() called with '$request', '$data'")
+            override suspend fun saveToStorage(data: List<TunesItem>, request: String) =
+                withContext(Dispatchers.IO) {
+                    Log.d(TAG, "searchAlbums.persist() called with '$request', '$data'")
 
-                val requestId = searchDao.insert(SearchRequestEntity(0, Date(), request))
+                    val requestId = searchDao.insert(SearchRequestEntity(0, Date(), request))
 
-                val entities = data.map {
-                    AlbumEntity(
-                        0, it.collectionId ?: return, it.artistName ?: return,
-                        it.collectionName ?: return, it.artworkUrl100 ?: return,
-                        it.releaseDate ?: return, it.primaryGenreName ?: return,
-                        requestId
-                    )
+                    val entities = data.map {
+                        AlbumEntity(
+                            0,
+                            it.collectionId ?: return@withContext,
+                            it.artistName ?: return@withContext,
+                            it.collectionName ?: return@withContext,
+                            it.artworkUrl100 ?: return@withContext,
+                            it.releaseDate ?: return@withContext,
+                            it.primaryGenreName ?: return@withContext,
+                            requestId
+                        )
+                    }
+
+                    albumDao.insertAll(entities)
                 }
-
-                albumDao.insertAll(entities)
-            }
 
             override fun loadFromDb(request: String) = albumDao.getAllBySearchTerm(request)
 
@@ -87,6 +97,14 @@ class TunesRepo @Inject constructor(
                     it.releaseDate, it.genre
                 )
             }
+
+            override suspend fun shouldUpdate(request: String) = withContext(Dispatchers.IO) {
+                return@withContext searchDao.countAllSince(
+                    request,
+                    System.currentTimeMillis() - CACHE_TIMEOUT
+                ) <= 0
+            }
+
         }.asLiveData(request)
     }
 
@@ -118,18 +136,21 @@ class TunesRepo @Inject constructor(
                 return result
             }
 
-            override fun saveToStorage(data: List<TunesItem>, request: Album) {
-                val entities = data.map {
-                    SongEntity(
-                        0, request.localId, it.trackName ?: return,
-                        it.previewUrl ?: return,
-                        it.trackTimeMillis ?: return,
-                        it.trackId ?: return
-                    )
-                }
+            override suspend fun saveToStorage(data: List<TunesItem>, request: Album) =
+                withContext(Dispatchers.IO) {
+                    Log.d(TAG, "loadTracks.saveToStorage(): request $request")
 
-                songDao.insertAll(entities)
-            }
+                    val entities = data.map {
+                        SongEntity(
+                            0, request.localId, it.trackName ?: return@withContext,
+                            it.previewUrl ?: return@withContext,
+                            it.trackTimeMillis ?: return@withContext,
+                            it.trackId ?: return@withContext
+                        )
+                    }
+
+                    songDao.insertAll(entities)
+                }
 
             override fun loadFromDb(request: Album) = songDao.getAllByAlbumId(request.localId)
 
@@ -137,6 +158,9 @@ class TunesRepo @Inject constructor(
                 Song(it.name, it.trackTimeMillis, it.previewUrl)
             }
 
+            override suspend fun shouldUpdate(request: Album) = withContext(Dispatchers.IO) {
+                return@withContext songDao.countAllByAlbumId(request.localId) <= 0
+            }
         }.asLiveData(request)
     }
 }
