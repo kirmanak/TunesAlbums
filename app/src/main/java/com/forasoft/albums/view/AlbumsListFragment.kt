@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -62,20 +63,26 @@ class AlbumsListFragment : Fragment() {
             viewModel.search(term).observe(this, Observer<RequestResult<List<Album>>> { result ->
                 when (val state = result?.state) {
                     State.SUCCESS -> {
-                        result.result?.let { albumAdapter.updateData(it) }
-                        progress_bar.visibility = View.GONE
+                        if (result.result != null && result.result.isNotEmpty()) {
+                            albumAdapter.updateData(result.result)
+                            progress_bar.visibility = View.GONE
+                        } else {
+                            showText(R.string.empty_result)
+                        }
                     }
                     State.LOADING -> progress_bar.visibility = View.VISIBLE
-                    State.FAILURE -> {
-                        val destination =
-                            AlbumsListFragmentDirections.actionAlbumsListFragmentToEmptyScreenFragment(
-                                getString(R.string.network_failure)
-                            )
-                        findNavController().navigate(destination)
-                    }
+                    State.FAILURE -> showText(R.string.network_failure)
                     else -> Log.w(TAG, "Unknown state: $state")
                 }
             })
         }
+    }
+
+    private fun showText(@StringRes textId: Int) {
+        val destination =
+            AlbumsListFragmentDirections.actionAlbumsListFragmentToEmptyScreenFragment(
+                getString(textId)
+            )
+        findNavController().navigate(destination)
     }
 }

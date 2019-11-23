@@ -5,4 +5,5 @@
     <string name="search">Search</string>
     <string name="search_prompt">Perform search to see the results</string>
     <string name="network_failure">Failed to request data from iTunes</string>
+    <string name="empty_result">Unfortunately, nothing was found</string>
 </resources>

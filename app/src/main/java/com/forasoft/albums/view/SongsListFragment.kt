@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -61,19 +62,24 @@ class SongsListFragment : Fragment() {
             viewModel.loadTracks(album).observe(this, Observer {
                 when (it.state) {
                     State.LOADING -> progress_bar.visibility = View.VISIBLE
-                    State.FAILURE -> {
-                        val direction =
-                            SongsListFragmentDirections.actionSongsListFragmentToEmptyScreenFragment(
-                                getString(R.string.network_failure)
-                            )
-                        findNavController().navigate(direction)
-                    }
+                    State.FAILURE -> showText(R.string.network_failure)
                     State.SUCCESS -> {
-                        it.result?.let { songs -> adapter.setData(songs) }
-                        progress_bar.visibility = View.GONE
+                        if (it.result == null || it.result.isEmpty()) {
+                            showText(R.string.empty_result)
+                        } else {
+                            adapter.setData(it.result)
+                            progress_bar.visibility = View.GONE
+                        }
                     }
                 }
             })
         }
+    }
+
+    private fun showText(@StringRes textId: Int) {
+        val destination = SongsListFragmentDirections.actionSongsListFragmentToEmptyScreenFragment(
+            getString(textId)
+        )
+        findNavController().navigate(destination)
     }
 }
