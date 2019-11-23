@@ -39,6 +39,7 @@
             app:argType="com.forasoft.albums.viewmodel.Album" />
         <action
             android:id="@+id/action_songsListFragment_to_emptyScreenFragment"
-            app:destination="@id/emptyScreenFragment" />
+            app:destination="@id/emptyScreenFragment"
+            app:popUpTo="@+id/albumsListFragment" />
     </fragment>
 </navigation>
