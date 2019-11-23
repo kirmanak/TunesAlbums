@@ -20,8 +20,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val args = bundleOf(TEXT_ARGUMENT to getString(R.string.search_prompt))
-        getNavController().setGraph(getNavController().graph, args)
+
+        if (savedInstanceState == null) {
+            val args = bundleOf(TEXT_ARGUMENT to getString(R.string.search_prompt))
+            val controller = getNavController()
+            controller.setGraph(controller.graph, args)
+        }
+
         handleIntent(intent)
     }
 
