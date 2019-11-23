@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/emptyScreenFragment">
+    <fragment
+        android:id="@+id/albumsListFragment"
+        android:name="com.forasoft.albums.view.AlbumsListFragment"
+        android:label="albums_list_fragment"
+        tools:layout="@layout/albums_list_fragment">
+        <argument
+            android:name="searchRequest"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/emptyScreenFragment"
+        android:name="com.forasoft.albums.view.EmptyScreenFragment"
+        android:label="EmptyScreenFragment">
+        <action
+            android:id="@+id/action_emptyScreenFragment_to_albumsListFragment"
+            app:destination="@id/albumsListFragment" />
+    </fragment>
+</navigation>

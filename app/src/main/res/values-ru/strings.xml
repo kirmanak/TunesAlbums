@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="album_poster_content_description">Постер альбома</string>
+    <string name="search_hint">Поиск по альбомам iTunes</string>
+    <string name="search">Поиск</string>
+    <string name="search_prompt">Чтобы увидеть результаты, выполните поиск</string>
+</resources>
