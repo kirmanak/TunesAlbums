@@ -13,7 +13,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/album_card_margin"
+        android:layout_margin="@dimen/card_margin"
         app:cardBackgroundColor="@android:color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,7 +36,7 @@
                 android:id="@+id/album_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/album_text_margin"
+                android:layout_margin="@dimen/text_margin"
                 android:text="@{album.name}"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 app:layout_constraintBottom_toTopOf="@+id/album_artist"
@@ -49,7 +49,7 @@
                 android:id="@+id/album_artist"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_margin="@dimen/album_text_margin"
+                android:layout_margin="@dimen/text_margin"
                 android:text="@{album.artistName}"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -62,7 +62,7 @@
                 android:id="@+id/album_release"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/album_text_margin"
+                android:layout_margin="@dimen/text_margin"
                 android:text="@{album.getYear()}"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 app:layout_constraintBaseline_toBaselineOf="@+id/album_artist"
@@ -74,7 +74,7 @@
                 android:id="@+id/album_genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/album_text_margin"
+                android:layout_margin="@dimen/text_margin"
                 android:text="@{album.genre}"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 app:layout_constraintBaseline_toBaselineOf="@+id/album_artist"

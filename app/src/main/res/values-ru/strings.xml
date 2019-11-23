@@ -4,5 +4,5 @@
     <string name="search_hint">Поиск по альбомам iTunes</string>
     <string name="search">Поиск</string>
     <string name="search_prompt">Чтобы увидеть результаты, выполните поиск</string>
-    <string name="search_failure">Не удалось получить данные от iTunes</string>
+    <string name="network_failure">Не удалось получить данные от iTunes</string>
 </resources>

@@ -15,6 +15,9 @@ class StorageModule {
     fun getAlbumDao(tunesDb: TunesDatabase) = tunesDb.albumDao()
 
     @Provides
+    fun getSongDao(tunesDb: TunesDatabase) = tunesDb.songDao()
+
+    @Provides
     fun createDb(context: Context): TunesDatabase = Room.databaseBuilder(
         context.applicationContext,
         TunesDatabase::class.java,

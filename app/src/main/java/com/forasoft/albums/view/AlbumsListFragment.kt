@@ -28,7 +28,13 @@ class AlbumsListFragment : Fragment() {
         private val TAG = AlbumsListFragment::class.java.simpleName
     }
 
-    private val albumAdapter by lazy { AlbumAdapter() }
+    private val albumAdapter by lazy {
+        AlbumAdapter {
+            val direction =
+                AlbumsListFragmentDirections.actionAlbumsListFragmentToSongsListFragment(it)
+            findNavController().navigate(direction)
+        }
+    }
     @Inject
     lateinit var viewModel: TunesViewModel
 
@@ -63,7 +69,7 @@ class AlbumsListFragment : Fragment() {
                     State.FAILURE -> {
                         val destination =
                             AlbumsListFragmentDirections.actionAlbumsListFragmentToEmptyScreenFragment(
-                                getString(R.string.search_failure)
+                                getString(R.string.network_failure)
                             )
                         findNavController().navigate(destination)
                     }

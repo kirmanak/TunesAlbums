@@ -10,8 +10,9 @@ import com.forasoft.albums.viewmodel.Album
 class AlbumViewHolder(private val binding: AlbumViewHolderBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun setData(item: Album) {
+    fun setData(item: Album, listener: (Album) -> Unit) {
         binding.album = item
         binding.executePendingBindings()
+        itemView.setOnClickListener { listener(item) }
     }
 }

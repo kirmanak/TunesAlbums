@@ -3,6 +3,7 @@ package com.forasoft.albums.di
 import android.content.Context
 import com.forasoft.albums.view.AlbumsListFragment
 import com.forasoft.albums.view.MainActivity
+import com.forasoft.albums.view.SongsListFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -18,4 +19,5 @@ interface AppComponent {
 
     fun inject(activity: MainActivity)
     fun inject(listFragment: AlbumsListFragment)
+    fun inject(listFragment: SongsListFragment)
 }

@@ -4,5 +4,5 @@
     <string name="search_hint">Search iTunes albums</string>
     <string name="search">Search</string>
     <string name="search_prompt">Perform search to see the results</string>
-    <string name="search_failure">Failed to request data from iTunes</string>
+    <string name="network_failure">Failed to request data from iTunes</string>
 </resources>

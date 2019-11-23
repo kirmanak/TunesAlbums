@@ -17,5 +17,5 @@ interface AlbumDao {
     fun getAllBySearchTerm(term: String): LiveData<Array<AlbumEntity>>
 
     @Insert
-    fun insertAll(albumEntities: Array<AlbumEntity>)
+    fun insertAll(albumEntities: List<AlbumEntity>)
 }

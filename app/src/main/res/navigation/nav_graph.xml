@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_albumsListFragment_to_emptyScreenFragment"
             app:destination="@id/emptyScreenFragment" />
+        <action
+            android:id="@+id/action_albumsListFragment_to_songsListFragment"
+            app:destination="@id/songsListFragment" />
     </fragment>
     <fragment
         android:id="@+id/emptyScreenFragment"
@@ -26,5 +29,16 @@
         <argument
             android:name="emptySearchText"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/songsListFragment"
+        android:name="com.forasoft.albums.view.SongsListFragment"
+        android:label="SongsListFragment">
+        <argument
+            android:name="album"
+            app:argType="com.forasoft.albums.viewmodel.Album" />
+        <action
+            android:id="@+id/action_songsListFragment_to_emptyScreenFragment"
+            app:destination="@id/emptyScreenFragment" />
     </fragment>
 </navigation>

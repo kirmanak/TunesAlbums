@@ -26,6 +26,12 @@ interface TunesInterface {
 
     @GET("/lookup")
     fun lookup(
-        @Query("id") id: Int
+        @Query("id") id: Long,
+        @Query("country") country: String = Locale.getDefault().country,
+        @Query("media") media: String = "music",
+        @Query("entity") entity: String = "song",
+        @Query("limit") limit: Int = 100,
+        @Query("lang") lang: String = "${Locale.getDefault().language}_${Locale.getDefault().country}",
+        @Query("explicit") explicit: String = "Yes"
     ): Call<TunesResult>
 }
