@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val args = bundleOf(TEXT_ARGUMENT to getString(R.string.search_prompt))
         getNavController().setGraph(getNavController().graph, args)
+        handleIntent(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -36,12 +37,6 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        handleIntent(intent)
-    }
-
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         handleIntent(intent)
@@ -52,9 +47,8 @@ class MainActivity : AppCompatActivity() {
         if (text == null || text.isBlank())
             return
 
-        val action =
-            EmptyScreenFragmentDirections.actionEmptyScreenFragmentToAlbumsListFragment(text)
-        getNavController().navigate(action)
+        val bundle = bundleOf("searchRequest" to text)
+        getNavController().navigate(R.id.albumsListFragment, bundle)
     }
 
     private fun handleIntent(intent: Intent?) {
