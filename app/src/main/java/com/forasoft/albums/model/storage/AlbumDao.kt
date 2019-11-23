@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Dao
 @Singleton
 interface AlbumDao {
-    @Query("SELECT * FROM AlbumEntity WHERE AlbumEntity.search_id = (SELECT uid FROM SearchRequestEntity WHERE SearchRequestEntity.term = :term ORDER BY date DESC LIMIT 1)")
+    @Query("SELECT * FROM AlbumEntity WHERE AlbumEntity.search_id = (SELECT uid FROM SearchRequestEntity WHERE SearchRequestEntity.term = :term ORDER BY date DESC LIMIT 1) ORDER BY name")
     fun getAllBySearchTerm(term: String): LiveData<Array<AlbumEntity>>
 
     @Insert

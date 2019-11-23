@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @Dao
 @Singleton
 interface SongDao {
-    @Query("SELECT * FROM SongEntity WHERE SongEntity.album_id = :albumId")
+    @Query("SELECT * FROM SongEntity WHERE SongEntity.album_id = :albumId ORDER BY name")
     fun getAllByAlbumId(albumId: Long): LiveData<Array<SongEntity>>
 
     @Query("SELECT COUNT(*) FROM SongEntity WHERE SongEntity.album_id = :albumId")
