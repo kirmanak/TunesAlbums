@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">TunesAlbums</string>
     <string name="album_poster_content_description">Album\'s poster</string>
-    <string name="search_hint">Search iTunes albums</string>
+    <string name="search_hint">Search iTunes</string>
     <string name="search">Search</string>
     <string name="search_prompt">Perform search to see the results</string>
     <string name="network_failure">Failed to request data from iTunes</string>
